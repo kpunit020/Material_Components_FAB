@@ -5,12 +5,14 @@ import {FAB_extended, FAB_regular} from '@ohos/Material_FAB'
 struct ListExample {
   private arr: number[] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
   @State editFlag: boolean = false
+  @State count : number = 1
 
   build() {
     Column() {
       Column() {
         List({ space: 20, initialIndex: 0 }) {
           ForEach(this.arr, (item) => {
+            
             ListItem() {
               Text('' + item)
                 .width('100%').height(100).fontSize(16)
@@ -37,41 +39,43 @@ struct ListExample {
       }.width('100%')
 
       FAB_extended({
+        fontColor : Color.White,
         fabIcon : $r('app.media.add_icon'),
-        fabLabel : 'Add',
+        fabLabel : `${this.count}`,
         onClick : () => {
+          this.count += 1
           AlertDialog.show({message : "you clicked fab_extended"})
           console.log('fired from fab_extended')
         },
 
         position : {x : 20, y : 670},
-        //rippleColor : Color.Red
       })
 
       FAB_regular({
         fabIcon : $r('app.media.add_icon'),
-        fabType : "small-FAB",
+        fabSize : "small",
         position : {x : 20, y : 50},
-//        onClick : () => {
-//          AlertDialog.show({message : "you clicked fab_small"})
-//          console.log('fired from fab_small')
-//        }
+        onClick : (event) => {
+          AlertDialog.show({message : "you clicked fab_small"})
+          console.log('fired from fab_small')
+        }
       })
 
       FAB_regular({
         fabIcon : $r('app.media.add_icon'),
-        fabType : "FAB",
+        fabSize : "medium",
         position : {x : 280, y:670},
-        bgColor : Color.Red,
-//        onClick : () => {
-//          AlertDialog.show({message : "you clicked fab_mid"})
-//          console.log('fired from fab_mid')
-//        }
+        backgroundColor : Color.Red,
+        onClick : (event) => {
+          AlertDialog.show({message : "you clicked fab_mid"})
+          console.log('fired from fab_mid')
+        }
       })
       FAB_regular({
+
         fabIcon : $r('app.media.add_icon'),
-        fabType : "large-FAB",
-        bgColor : Color.Orange,
+        fabSize : "large",
+        backgroundColor : Color.Orange,
         position : {x: 230, y : 50},
 //        onClick : () => {
 //          AlertDialog.show({message : "you clicked fab_large"})

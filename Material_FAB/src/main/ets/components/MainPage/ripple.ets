@@ -1,35 +1,35 @@
-
 @Component
 export struct rippleUtils {
-  @State private rippleSize: number = 10
-  @State private rippleX: number = 30
-  @State private rippleY: number = 10
-  @State private rippleScale: number = 0
-  @State private rippleVisible: boolean = true
-  @State private opacity: number = 0.4
+  rippleDuration : number = 300
+  unbounded : boolean = false
+  color: ResourceColor = Color.Red // fill color of the circle
 
-  @Link rippleColor: Color
+  private rippleSize: number = 10
+  private opacity: number = 0.4
 
-  // click event coordinates
-  @State rippleStartPosition: {
+  @State private rippleX: number = 0
+  @State private rippleY: number = 0
+  @State private rippleScale: number = 0 // current scale of circle
+
+  @Link showRipple: boolean // for rendering control
+
+  @Link rippleStartPosition: { // click event coordinates
     x: number,
     y: number
-  } = { x: 40, y: 20 }
-
-  // ripple flex container attributes
-  @Link size: {
-    width: number,
-    height: number
   }
-  @Link _radius: number
+  @Link size: {width: number, height : number } // size of ripple container
+  @Link border: BorderOptions // radius of ripple container
+
 
   ripple_animation() {
+    this.rippleX = this.rippleStartPosition.x - this.rippleSize / 2
+    this.rippleY = this.rippleStartPosition.y - this.rippleSize / 2
     animateTo({
-      duration: 300,
-      curve: Curve.Ease,
+      duration: this.rippleDuration,
+      curve: Curve.Sharp,
       onFinish: () => {
         this.rippleScale = 0
-        this.rippleVisible = false
+        this.showRipple = false
       }
     },
       () => {
@@ -37,34 +37,30 @@ export struct rippleUtils {
       })
   }
 
-
   build() {
-    Flex() {
-      Circle()
-        .visibility(this.rippleVisible ? Visibility.Visible : Visibility.Hidden)
-        .fill(this.rippleColor)
-        .width(this.rippleSize)
-        .height(this.rippleSize)
-        .opacity(this.opacity)
-        .position({ x: this.rippleX, y: this.rippleY })
-        .scale({
-          x: this.rippleScale,
-          y: this.rippleScale,
-          centerX: this.rippleSize / 2,
-          centerY: this.rippleSize / 2
-        })
+    if (this.showRipple) {
+      Flex() {
+        Circle()
+          .fill(this.color)
+          .width(this.rippleSize)
+          .height(this.rippleSize)
+          .opacity(this.opacity)
+          .position({ x: this.rippleX, y: this.rippleY })
+          .scale({
+            x: this.rippleScale,
+            y: this.rippleScale,
+            centerX: this.rippleSize / 2,
+            centerY: this.rippleSize / 2
+          })
+      }
+      .clip(!this.unbounded)
+      .size(this.size)
+      .position({ x: 0, y: 0 })
+      .zIndex(2)
+      .border(this.border)
+      .onAppear(() => {
+        this.ripple_animation()
+      })
     }
-    .clip(true)
-    .size(this.size)
-    .position({ x: 0, y: 0 })
-    .zIndex(2)
-    .borderRadius(this._radius)
-    .onAppear(() => {
-      this.rippleVisible = true
-      this.rippleX = this.rippleStartPosition.x - this.rippleSize / 2
-      this.rippleY = this.rippleStartPosition.y - this.rippleSize / 2
-
-      this.ripple_animation()
-    })
   }
 }
