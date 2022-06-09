@@ -70,6 +70,7 @@ struct ListExample {
           console.log('fired from fab_mid')
         }
       })
+
       FAB_regular({
 
         fabIcon : $r('app.media.add_icon'),

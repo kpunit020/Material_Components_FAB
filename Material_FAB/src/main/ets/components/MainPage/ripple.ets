@@ -21,9 +21,11 @@ export struct rippleUtils {
   @Link border: BorderOptions // radius of ripple container
 
 
-  ripple_animation() {
+  private ripple_animation() {
+    // position coordinates for the circle
     this.rippleX = this.rippleStartPosition.x - this.rippleSize / 2
     this.rippleY = this.rippleStartPosition.y - this.rippleSize / 2
+
     animateTo({
       duration: this.rippleDuration,
       curve: Curve.Sharp,
@@ -33,6 +35,7 @@ export struct rippleUtils {
       }
     },
       () => {
+        // max allowed size of the circle according to the container size
         this.rippleScale = Math.ceil(Math.sqrt(Math.pow(this.size.width, 2) + Math.pow(this.size.height, 2)) * 2 / this.rippleSize)
       })
   }
