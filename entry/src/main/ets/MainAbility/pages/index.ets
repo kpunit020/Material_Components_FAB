@@ -41,9 +41,8 @@ struct ListExample {
       FAB_extended({
         fontColor : Color.White,
         fabIcon : $r('app.media.add_icon'),
-        fabLabel : `${this.count}`,
+        fabLabel : `Add`,
         onClick : () => {
-          this.count += 1
           AlertDialog.show({message : "you clicked fab_extended"})
           console.log('fired from fab_extended')
         },

@@ -77,7 +77,7 @@ export struct FAB_regular {
     .size(this.containerSize)
     .backgroundColor(this.backgroundColor)
     .border(this.border)
-    .zIndex(99999)
+    .zIndex(99999999)
     .shadow({ radius: 30, color: Color.Gray, offsetY: 16 })
     .position(this.position)
     .margin(this.margin)
@@ -87,8 +87,9 @@ export struct FAB_regular {
         y: event.y
       }
       this.showRipple = true
-      this.onClick(event)
+      setTimeout(()=> {
+        this.onClick(event)
+      }, 300)
     })
-    .onMouse()
   }
 }
